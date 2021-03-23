@@ -54,8 +54,10 @@ async def on_message(message):
   
   if msg.startswith('$hello'):
     await message.channel.send('Hello!')
-  elif msg.startswith('$uplift'):
+  if msg.startswith('$uplift'):
     await message.channel.send(quote)
+  if msg.startswith('$commands'):
+    await message.channel.send('```Commands \n$hello - Hello\n \n$uplift - Generate random quote\n \n$new + message - Add new message to database\n \n$del + index(number) - Delete message from database\n \n$list - Show database of messages\n \n$responding true - Turn on Uplift bot\n \n$responding false - Turn off Uplift bot```')
   
   if db['responding']:
     options = starter_encouragements
@@ -88,7 +90,6 @@ async def on_message(message):
   
   if msg.startswith('$responding'):
     value = msg.split('$responding ', 1)[1]
-
     if value.lower() == 'true':
       db['responding'] = True
       await message.channel.send('Responding is on.')

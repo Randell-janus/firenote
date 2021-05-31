@@ -1,1 +1,1 @@
-# Next.js
+# Next.js with Firebase

@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Todos from "../components/Todos";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../firebase";
+import { auth } from "../firebase/firebase";
 import firebase from 'firebase'
 
 const signInWithGoogle = () => {auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())};

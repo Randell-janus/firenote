@@ -1,60 +1,58 @@
 import firebase from "firebase";
 import { auth } from "../firebase/firebase";
-import { Container, Heading, Stack, Text, Button } from "@chakra-ui/react";
+import { Container, Stack, Button, useColorModeValue } from "@chakra-ui/react";
 import { FaGoogle, FaGithub } from "react-icons/fa";
 import Link from "next/link";
+import Title from "./Title";
 
 const signInWithGoogle = () => {
   auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
 };
+const buttonFontSize = {
+  sm: "sm",
+  md: "lg",
+};
 
 export default function Hero() {
   return (
-    <Container maxW={"5xl"}>
+    <Container
+      h="100vh"
+      maxW="100%"
+      bg={useColorModeValue("gray.50", "gray.800")}
+    >
+      {/* Main stack */}
       <Stack
-        height="100vh"
+        height="80vh"
         align={"center"}
         justify="center"
-        spacing={{ base: 8, md: 10 }}
-        py={{ base: 20, md: 28 }}
+        spacing={{ sm: 8, md: 10 }}
+        // py={{ sm: 20, md: 28 }}
       >
-        <Heading
-          fontWeight={700}
-          fontSize={{ base: "3xl", sm: "7xl", md: "8xl" }}
-          lineHeight={"30%"}
-        >
-          fire
-          <Text as={"span"} color={"orange.400"}>
-            note
-          </Text>
-        </Heading>
-
-        <Text py={6} color={"gray.500"} fontSize={{ sm: "md", md: "xl" }}>
-          Got an idea? Take a quick firenote!
-        </Text>
-
+        {/* Main stack child 1 */}
+        <Title />
+        {/* Main stack child 2 */}
         <Stack spacing={4} direction={"column"}>
           <Button
-            rounded="lg"
-            fontSize={{ sm: "sm", md: "md" }}
+            px={9}
             colorScheme={"orange"}
             bg={"orange.400"}
-            _hover={{ bg: "orange.500" }}
+            _hover={{ bg: "orange.200" }}
+            _focus={{ bg: "orange.400" }}
+            fontSize={buttonFontSize}
             leftIcon={<FaGoogle />}
             onClick={signInWithGoogle}
           >
-            Sign in with Google
+            Get Started
           </Button>
-          <Button
-            rounded="lg"
-            fontSize={{ sm: "sm", md: "md" }}
-            variant="outline"
-            leftIcon={<FaGithub />}
-          >
-            <Link href="https://github.com/Randell-janus/next.js-firebase">
-              <a>View Source</a>
-            </Link>
-          </Button>
+          <Link href="https://github.com/Randell-janus/next.js-firebase">
+            <Button
+              variant="outline"
+              fontSize={buttonFontSize}
+              leftIcon={<FaGithub />}
+            >
+              View Source
+            </Button>
+          </Link>
         </Stack>
       </Stack>
     </Container>

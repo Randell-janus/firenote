@@ -26,7 +26,6 @@ export default function Hero() {
         align={"center"}
         justify="center"
         spacing={{ sm: 8, md: 10 }}
-        // py={{ sm: 20, md: 28 }}
       >
         {/* Main stack child 1 */}
         <Title />

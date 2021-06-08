@@ -17,7 +17,12 @@ const signInWithGoogle = () => {
 
 export default function Navbar() {
   const [user] = useAuthState(auth);
-  const signOut = () => auth.signOut();
+  const signOut = () => {
+    setTimeout(() => {
+      auth.signOut();
+    }, 0);
+  };
+
   return (
     <>
       <Box bg={useColorModeValue("orange.400", "gray.900")}>
@@ -37,7 +42,7 @@ export default function Navbar() {
             _hover={{ bg: "gray.200" }}
             _focus={{ bg: "gray.50" }}
             color={"orange.400"}
-            fontSize={{sm:'xs', md:'sm'}}
+            fontSize={{ sm: "xs", md: "sm" }}
             leftIcon={user ? <BiLogOut /> : <AiOutlineGoogle />}
             onClick={user ? signOut : signInWithGoogle}
           >

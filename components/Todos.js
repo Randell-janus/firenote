@@ -1,5 +1,5 @@
 import firebase from "firebase";
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { auth, firestore } from "../firebase/firebase";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import {
@@ -17,13 +17,17 @@ import {
   Modal,
   ModalOverlay,
   ModalContent,
-  ModalHeader,
   ModalFooter,
   ModalBody,
-  ModalCloseButton,
   useDisclosure,
 } from "@chakra-ui/react";
 import { FaPencilAlt, FaTrash, FaCheckSquare, FaEdit } from "react-icons/fa";
+import ModalHeading from "./ModalHeading";
+
+const fontSize = {
+  sm: "sm",
+  md: "md",
+};
 
 const Todos = () => {
   const [todo, setTodo] = useState("");
@@ -80,7 +84,7 @@ const Todos = () => {
               required
               value={todo}
               onChange={(e) => setTodo(e.target.value)}
-              fontSize={{ sm: "sm", md: "lg" }}
+              fontSize={fontSize}
               placeholder={"Got an idea?"}
               type={"text"}
               color={useColorModeValue("gray.800", "gray.200")}
@@ -92,7 +96,7 @@ const Todos = () => {
               _hover={{ bg: "orange.200" }}
               _focus={{ bg: "orange.400" }}
               colorScheme={"orange"}
-              fontSize={{ sm: "sm", md: "lg" }}
+              fontSize={fontSize}
               leftIcon={<FaPencilAlt />}
             >
               Add to list
@@ -129,6 +133,7 @@ const Todo = ({ id, complete, text }) => {
         console.error(err);
       });
   };
+
   return (
     <Flex
       p={{ sm: "6", md: "5" }}
@@ -149,7 +154,7 @@ const Todo = ({ id, complete, text }) => {
         mb={{ sm: "8", md: "0" }}
         textAlign="justify"
       >
-        <Container maxW="md" mr={{ sm: "0", md: "4" }}>
+        <Container fontSize={fontSize} maxW="md" mr={{ sm: "0", md: "4" }}>
           {text}
         </Container>
       </Flex>
@@ -157,40 +162,48 @@ const Todo = ({ id, complete, text }) => {
       <Flex>
         {/* Flex child 1 */}
         <IconButton
-          mx={1}
+          size="sm"
+          bg="gray.200"
+          _hover={{ bg: "gray.300" }}
+          _focus={{ bg: "gray.200" }}
           className="complete-todo"
           onClick={() => onCompleteTodo(id, complete)}
           aria-label="complete todo"
           icon={<FaCheckSquare />}
-        ></IconButton>
+        />
         {/* Flex child 2 */}
         <IconButton
-          mx={1}
-          className="remove-todo"
-          onClick={() => onDeleteTodo(id)}
-          aria-label="remove todo"
-          icon={<FaTrash />}
-        ></IconButton>
-        {/* Flex child 3 */}
-        <IconButton
-          mx={1}
+          size="sm"
+          mx={{ sm: "2", md: "3" }}
+          bg="gray.200"
+          _hover={{ bg: "gray.300" }}
+          _focus={{ bg: "gray.200" }}
           className="update-todo"
           onClick={onOpen}
           aria-label="update todo"
           icon={<FaEdit />}
-        ></IconButton>
-        {/* Flex child 4 */}
+        />
+        {/* Flex child 3 */}
+        <IconButton
+          size="sm"
+          bg="gray.200"
+          _hover={{ bg: "gray.300" }}
+          _focus={{ bg: "gray.200" }}
+          className="remove-todo"
+         onClick={() => onDeleteTodo(id)}
+          aria-label="remove todo"
+          icon={<FaTrash />}
+        />
+        {/* Flex child 4 / EDIT modal */}
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
-          <ModalContent maxW={{sm:'sm', md:'lg'}}>
-            <ModalHeader fontSize={{ sm: "sm", md: "lg" }}>
-              Edit Todo
-            </ModalHeader>
-            <ModalCloseButton />
+          <ModalContent maxW={{ sm: "sm", md: "lg" }}>
+            <ModalHeading />
+
             <form onSubmit={onUpdateTodo}>
               <ModalBody>
                 <Textarea
-                  fontSize={{ sm: "sm", md: "lg" }}
+                  fontSize={fontSize}
                   required
                   placeholder={text}
                   type="text"
@@ -201,13 +214,12 @@ const Todo = ({ id, complete, text }) => {
               </ModalBody>
               <ModalFooter>
                 <Button
-                  fontSize={{ sm: "sm", md: "md" }}
+                  fontSize={fontSize}
                   className="update-todo"
                   type="submit"
                   colorScheme="orange"
                   bg="orange.400"
                   onClick={onClose}
-                  rightIcon={<FaPencilAlt />}
                 >
                   Save
                 </Button>

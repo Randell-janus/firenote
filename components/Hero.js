@@ -1,19 +1,44 @@
 import firebase from "firebase";
 import { auth } from "../firebase/firebase";
-import { Container, Stack, Button, useColorModeValue } from "@chakra-ui/react";
+import {
+  Container,
+  Stack,
+  Button,
+  useColorModeValue,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { FaGoogle, FaGithub } from "react-icons/fa";
+import { RiSpyLine } from "react-icons/ri";
 import Link from "next/link";
 import Title from "./Title";
 
 const signInWithGoogle = () => {
   auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
 };
-const buttonFontSize = {
-  sm: "sm",
-  md: "lg",
+const signInAsGuest = () => {
+  auth.signInAnonymously();
+};
+const fontSize = {
+  Regular: {
+    sm: "sm",
+    md: "md",
+  },
+  Header: {
+    sm: "md",
+    md: "xl",
+  },
 };
 
 export default function Hero() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <Container
       h="100vh"
@@ -31,22 +56,36 @@ export default function Hero() {
         <Title />
         {/* Main stack child 2 */}
         <Stack spacing={4} direction={"column"}>
+          {/* Stack child button 1 */}
           <Button
             px={9}
             colorScheme={"orange"}
             bg={"orange.400"}
-            _hover={{ bg: "orange.200" }}
+            _hover={{ bg: "orange.300" }}
             _focus={{ bg: "orange.400" }}
-            fontSize={buttonFontSize}
+            fontSize={fontSize.Regular}
             leftIcon={<FaGoogle />}
             onClick={signInWithGoogle}
           >
-            Get Started
+            Sign in with Google
           </Button>
+          {/* Stack child button 2 */}
+          <Button
+            colorScheme={"blackAlpha"}
+            bg={"gray.800"}
+            _hover={{ bg: "gray.700" }}
+            _focus={{ bg: "gray.800" }}
+            fontSize={fontSize.Regular}
+            leftIcon={<RiSpyLine />}
+            onClick={onOpen}
+          >
+            Sign in as Guest
+          </Button>
+          {/* Stack child button 3 */}
           <Link href="https://github.com/Randell-janus/next.js-firebase">
             <Button
               variant="outline"
-              fontSize={buttonFontSize}
+              fontSize={fontSize.Regular}
               leftIcon={<FaGithub />}
             >
               View Source
@@ -54,6 +93,41 @@ export default function Hero() {
           </Link>
         </Stack>
       </Stack>
+      {/* Main modal */}
+      <Modal isOpen={isOpen} onClose={onClose} isCentered>
+        <ModalOverlay />
+        <ModalContent maxW={{ sm: "xs", md: "sm" }}>
+          <ModalHeader fontSize={fontSize.Header}>Anonymous Login</ModalHeader>
+          <ModalCloseButton _focus="" />
+          <ModalBody fontSize={fontSize.Regular} textAlign="justify">
+            Feel free to create some task and test out the CRUD functionality of
+            the app. Note that you will lose access to any created task once you
+            sign out as a guest.
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              bg="gray.200"
+              _hover={{ bg: "gray.300" }}
+              _focus={{ bg: "gray.200" }}
+              fontSize={fontSize.Regular}
+              mr={3}
+              onClick={onClose}
+            >
+              Cancel
+            </Button>
+            <Button
+              colorScheme={"orange"}
+              bg={"orange.400"}
+              _hover={{ bg: "orange.300" }}
+              _focus={{ bg: "orange.400" }}
+              fontSize={fontSize.Regular}
+              onClick={signInAsGuest}
+            >
+              Proceed
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Container>
   );
 }

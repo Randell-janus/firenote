@@ -37,7 +37,7 @@ export default function Navbar() {
             _hover={{ bg: "gray.200" }}
             _focus={{ bg: "gray.50" }}
             color={"orange.400"}
-            fontSize="sm"
+            fontSize={{sm:'xs', md:'sm'}}
             leftIcon={user ? <BiLogOut /> : <AiOutlineGoogle />}
             onClick={user ? signOut : signInWithGoogle}
           >

@@ -1,5 +1,5 @@
 import firebase from "firebase";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { auth, firestore } from "../firebase/firebase";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import {
@@ -10,9 +10,18 @@ import {
   Input,
   Heading,
   Text,
+  Textarea,
   Box,
   Flex,
   IconButton,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { FaPencilAlt, FaTrash, FaCheckSquare, FaEdit } from "react-icons/fa";
 
@@ -57,11 +66,12 @@ const Todos = () => {
       <Box
         w={{ sm: "sm", md: "2xl" }}
         bg={useColorModeValue("gray.50", "gray.900")}
-        boxShadow={"2xl"}
+        boxShadow={"xl"}
         rounded={"lg"}
         p={6}
         textAlign={"center"}
       >
+        {/* Box child 1 */}
         <form onSubmit={onSubmitTodo}>
           <Stack spacing={4} direction={{ sm: "column", md: "row" }} mb={8}>
             <Input
@@ -75,7 +85,6 @@ const Todos = () => {
               type={"text"}
               color={useColorModeValue("gray.800", "gray.200")}
             />
-
             <Button
               type="submit"
               px={14}
@@ -90,6 +99,7 @@ const Todos = () => {
             </Button>
           </Stack>
         </form>
+        {/* Box child 2 */}
         {todos && todos.map((todo) => <Todo key={todo.id} {...todo} />)}
       </Box>
     </Stack>
@@ -98,19 +108,17 @@ const Todos = () => {
 
 const Todo = ({ id, complete, text }) => {
   const todosRef = firestore.collection(`users/${auth.currentUser.uid}/todos`);
-
   const [editedTodo, setEditedTodo] = useState("");
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const onCompleteTodo = (id, complete) => {
     todosRef.doc(id).set({ complete: !complete }, { merge: true });
   };
-
   const onDeleteTodo = (id) => {
     todosRef.doc(id).delete();
   };
-
-  function onUpdateTodo(event) {
-    event.preventDefault();
+  const onUpdateTodo = (e) => {
+    e.preventDefault();
     setEditedTodo("");
     todosRef
       .doc(id)
@@ -120,8 +128,7 @@ const Todo = ({ id, complete, text }) => {
       .catch((err) => {
         console.error(err);
       });
-  }
-
+  };
   return (
     <Flex
       p={{ sm: "6", md: "5" }}
@@ -131,6 +138,7 @@ const Todo = ({ id, complete, text }) => {
       justify="space-between"
       direction={{ sm: "column", md: "row" }}
       boxShadow={"xs"}
+      rounded="md"
       bg={useColorModeValue("gray.50", "gray.900")}
     >
       {/* Main flex child 1 */}
@@ -141,48 +149,72 @@ const Todo = ({ id, complete, text }) => {
         mb={{ sm: "8", md: "0" }}
         textAlign="justify"
       >
-        <Container maxW="md">{text}</Container>
+        <Container maxW="md" mr={{ sm: "0", md: "4" }}>
+          {text}
+        </Container>
       </Flex>
       {/* Main flex child 2 */}
       <Flex>
+        {/* Flex child 1 */}
         <IconButton
           mx={1}
-          className="remove-todo"
+          className="complete-todo"
           onClick={() => onCompleteTodo(id, complete)}
           aria-label="complete todo"
           icon={<FaCheckSquare />}
         ></IconButton>
-        <form onSubmit={onUpdateTodo}>
-          <input
-            type="text"
-            required
-            value={editedTodo}
-            onChange={(e) => setEditedTodo(e.target.value)}
-          />
-          <IconButton
-            mx={1}
-            className="remove-todo"
-            type="submit"
-            // onClick={() => onUpdateTodo(id)}
-            aria-label="edit todo"
-            icon={<FaEdit />}
-          ></IconButton>
-        </form>
-
+        {/* Flex child 2 */}
         <IconButton
           mx={1}
           className="remove-todo"
           onClick={() => onDeleteTodo(id)}
-          aria-label="delete todo"
+          aria-label="remove todo"
           icon={<FaTrash />}
         ></IconButton>
+        {/* Flex child 3 */}
         <IconButton
           mx={1}
-          className="remove-todo"
-          onClick={() => onDeleteTodo(id)}
-          aria-label="delete todo"
+          className="update-todo"
+          onClick={onOpen}
+          aria-label="update todo"
           icon={<FaEdit />}
         ></IconButton>
+        {/* Flex child 4 */}
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent maxW={{sm:'sm', md:'lg'}}>
+            <ModalHeader fontSize={{ sm: "sm", md: "lg" }}>
+              Edit Todo
+            </ModalHeader>
+            <ModalCloseButton />
+            <form onSubmit={onUpdateTodo}>
+              <ModalBody>
+                <Textarea
+                  fontSize={{ sm: "sm", md: "lg" }}
+                  required
+                  placeholder={text}
+                  type="text"
+                  required
+                  value={editedTodo}
+                  onChange={(e) => setEditedTodo(e.target.value)}
+                />
+              </ModalBody>
+              <ModalFooter>
+                <Button
+                  fontSize={{ sm: "sm", md: "md" }}
+                  className="update-todo"
+                  type="submit"
+                  colorScheme="orange"
+                  bg="orange.400"
+                  onClick={onClose}
+                  rightIcon={<FaPencilAlt />}
+                >
+                  Save
+                </Button>
+              </ModalFooter>
+            </form>
+          </ModalContent>
+        </Modal>
       </Flex>
     </Flex>
   );

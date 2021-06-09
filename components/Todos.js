@@ -26,7 +26,7 @@ import ModalHeading from "./ModalHeading";
 import DeleteModal from "./DeleteModal";
 
 const fontSize = {
-  sm: "sm",
+  base: "sm",
   md: "md",
 };
 
@@ -49,15 +49,15 @@ const Todos = () => {
       h="100%"
       w="100%"
       align={"center"}
-      spacing={{ sm: 10, md: 12 }}
-      py={{ sm: 12, md: 14 }}
+      spacing={{ base: 10, md: 12 }}
+      py={{ base: 12, md: 14 }}
     >
       {/* Main stack child 1 */}
-      <Stack direction="column" align={"center"} spacing={{ sm: 4, md: 6 }}>
-        <Heading fontSize={{ sm: "2xl", md: "4xl" }}>🔥</Heading>
+      <Stack direction="column" align={"center"} spacing={{ base: 4, md: 6 }}>
+        <Heading fontSize={{ base: "2xl", md: "4xl" }}>🔥</Heading>
         <Heading
           fontWeight={700}
-          fontSize={{ sm: "4xl", md: "5xl" }}
+          fontSize={{ base: "4xl", md: "5xl" }}
           lineHeight={"30%"}
           textDecoration="underline"
         >
@@ -69,7 +69,7 @@ const Todos = () => {
       </Stack>
       {/* Main stack child 2 */}
       <Box
-        w={{ sm: "sm", md: "2xl" }}
+        w={{ base: "sm", md: "2xl" }}
         bg={useColorModeValue("gray.50", "gray.900")}
         boxShadow={"xl"}
         rounded={"lg"}
@@ -78,9 +78,9 @@ const Todos = () => {
       >
         {/* Box child 1 */}
         <form onSubmit={onSubmitTodo}>
-          <Stack spacing={4} direction={{ sm: "column", md: "row" }} mb={8}>
+          <Stack spacing={4} direction={{ base: "column", md: "row" }} mb={8}>
             <Input
-              w={{ sm: "auto", md: "lg" }}
+              w={{ base: "auto", md: "lg" }}
               variant="flushed"
               required
               value={todo}
@@ -136,12 +136,12 @@ const Todo = ({ id, complete, text }) => {
   };
   return (
     <Flex
-      p={{ sm: "6", md: "5" }}
+      p={{ base: "6", md: "5" }}
       mt={4}
       key={id}
       align="center"
       justify="space-between"
-      direction={{ sm: "column", md: "row" }}
+      direction={{ base: "column", md: "row" }}
       boxShadow={"xs"}
       rounded="md"
       bg={useColorModeValue("gray.50", "gray.900")}
@@ -151,10 +151,10 @@ const Todo = ({ id, complete, text }) => {
         className={`todo-item ${complete ? "complete" : ""}`}
         tabIndex="0"
         textDecoration={complete ? "line-through" : ""}
-        mb={{ sm: "8", md: "0" }}
+        mb={{ base: "8", md: "0" }}
         textAlign="justify"
       >
-        <Container fontSize={fontSize} maxW="md" mr={{ sm: "0", md: "4" }}>
+        <Container fontSize={fontSize} maxW="md" mr={{ base: "0", md: "4" }}>
           {text}
         </Container>
       </Flex>
@@ -174,7 +174,7 @@ const Todo = ({ id, complete, text }) => {
         {/* Flex child 2 */}
         <IconButton
           size="sm"
-          mx={{ sm: "2", md: "3" }}
+          mx={{ base: "2", md: "3" }}
           bg="gray.200"
           _hover={{ bg: "gray.300" }}
           _focus={{ bg: "gray.200" }}
@@ -202,7 +202,7 @@ const Todo = ({ id, complete, text }) => {
       {/* EDIT MODAL */}
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent maxW={{ sm: "xs", md: "sm" }}>
+        <ModalContent maxW={{ base: "xs", md: "sm" }}>
           <ModalHeading />
           <form onSubmit={onUpdateTodo}>
             <ModalBody>

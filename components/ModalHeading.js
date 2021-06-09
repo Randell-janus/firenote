@@ -5,7 +5,7 @@ import {
 } from "@chakra-ui/react";
 
 const fontSize = {
-  sm: "sm",
+  base: "sm",
   md: "md",
 };
 const ModalHeading = () => {
@@ -15,9 +15,9 @@ const ModalHeading = () => {
         <CircularProgress
           isIndeterminate
           color="orange.400"
-          size={{ sm: "4", md: "6" }}
-          mr={{ sm: "1", md: "2" }}
-          mt={{ sm: "1", md: "0" }}
+          size={{ base: "4", md: "6" }}
+          mr={{ base: "1", md: "2" }}
+          mt={{ base: "1", md: "0" }}
         />
         editing...
       </ModalHeader>

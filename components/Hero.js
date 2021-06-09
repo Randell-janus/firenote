@@ -28,11 +28,11 @@ const signInAsGuest = () => {
 };
 const fontSize = {
   Regular: {
-    sm: "sm",
+    base: "sm",
     md: "md",
   },
   Header: {
-    sm: "md",
+    base: "md",
     md: "xl",
   },
 };
@@ -51,7 +51,7 @@ export default function Hero() {
         height="80vh"
         align={"center"}
         justify="center"
-        spacing={{ sm: 8, md: 10 }}
+        spacing={{ base: 8, md: 10 }}
       >
         {/* Main stack child 1 */}
         <Title />
@@ -97,7 +97,7 @@ export default function Hero() {
       {/* Main modal */}
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
-        <ModalContent maxW={{ sm: "xs", md: "sm" }}>
+        <ModalContent maxW={{ base: "xs", md: "sm" }}>
           <ModalHeader display="flex" fontSize={fontSize.Header}>
             <Flex align="center">
               <RiSpyLine />

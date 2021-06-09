@@ -30,7 +30,7 @@ export default function Navbar() {
         <Flex
           align={"center"}
           justify={"space-between"}
-          maxW={{ sm: "sm", md: "2xl" }}
+          maxW={{ base: "sm", md: "2xl" }}
           mx="auto"
           h={16}
         >
@@ -42,7 +42,7 @@ export default function Navbar() {
             _hover={{ bg: "gray.200" }}
             _focus={{ bg: "gray.50" }}
             color={"orange.400"}
-            fontSize={{ sm: "xs", md: "sm" }}
+            fontSize={{ base: "xs", md: "sm" }}
             leftIcon={user ? <BiLogOut /> : <AiOutlineGoogle />}
             onClick={user ? signOut : signInWithGoogle}
           >

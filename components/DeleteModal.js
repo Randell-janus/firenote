@@ -12,7 +12,7 @@ import {
 import { FaTrash } from "react-icons/fa";
 
 const fontSize = {
-  sm: "sm",
+  base: "sm",
   md: "md",
 };
 
@@ -32,7 +32,7 @@ const DeleteModal = ({ modalBody, children }) => {
       />
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent maxW={{ sm: "xs", md: "sm" }}>
+        <ModalContent maxW={{ base: "xs", md: "sm" }}>
           <ModalBody pt={6} fontSize={fontSize}>
             {modalBody}
           </ModalBody>

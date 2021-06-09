@@ -13,6 +13,7 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
+  Flex,
 } from "@chakra-ui/react";
 import { FaGoogle, FaGithub } from "react-icons/fa";
 import { RiSpyLine } from "react-icons/ri";
@@ -97,7 +98,12 @@ export default function Hero() {
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent maxW={{ sm: "xs", md: "sm" }}>
-          <ModalHeader fontSize={fontSize.Header}>Anonymous Login</ModalHeader>
+          <ModalHeader display="flex" fontSize={fontSize.Header}>
+            <Flex align="center">
+              <RiSpyLine />
+            </Flex>
+            <Flex ml={2}>Anonymous Login</Flex>
+          </ModalHeader>
           <ModalCloseButton _focus="" />
           <ModalBody fontSize={fontSize.Regular} textAlign="justify">
             Feel free to create some task and test out the CRUD functionality of
@@ -106,11 +112,10 @@ export default function Hero() {
           </ModalBody>
           <ModalFooter>
             <Button
-              bg="gray.200"
-              _hover={{ bg: "gray.300" }}
-              _focus={{ bg: "gray.200" }}
               fontSize={fontSize.Regular}
+              variant="ghost"
               mr={3}
+              _focus=""
               onClick={onClose}
             >
               Cancel

@@ -4,39 +4,49 @@ import {
   Modal,
   ModalOverlay,
   ModalContent,
-  ModalHeader,
   ModalFooter,
   ModalBody,
-  ModalCloseButton,
   useDisclosure,
+  IconButton,
 } from "@chakra-ui/react";
+import { FaTrash } from "react-icons/fa";
 
-const DeleteModal = ({ showModalButtonText, modalHeader, modalBody }) => {
+const fontSize = {
+  sm: "sm",
+  md: "md",
+};
+
+const DeleteModal = ({ modalBody, children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
-      <Button colorScheme="red" size="xs" onClick={onOpen}>
-        {showModalButtonText}
-      </Button>
+      <IconButton
+        size="sm"
+        bg="gray.200"
+        _hover={{ bg: "gray.300" }}
+        _focus={{ bg: "gray.200" }}
+        className="remove-todo"
+        onClick={onOpen}
+        aria-label="remove todo"
+        icon={<FaTrash />}
+      />
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>{modalHeader}</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>{modalBody}</ModalBody>
-
+        <ModalContent maxW={{ sm: "xs", md: "sm" }}>
+          <ModalBody pt={6} fontSize={fontSize}>
+            {modalBody}
+          </ModalBody>
           <ModalFooter>
-            <Button variant="ghost" mr={3} onClick={onClose}>
+            <Button
+              fontSize={fontSize}
+              variant="ghost"
+              mr={3}
+              _focus=""
+              onClick={onClose}
+            >
               Cancel
             </Button>
-            <Button
-              colorScheme="red"
-              onClick={() => {
-                alert(1);
-              }}
-            >
-              Delete
-            </Button>
+            {children}
           </ModalFooter>
         </ModalContent>
       </Modal>

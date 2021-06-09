@@ -21,8 +21,9 @@ import {
   ModalBody,
   useDisclosure,
 } from "@chakra-ui/react";
-import { FaPencilAlt, FaTrash, FaCheckSquare, FaEdit } from "react-icons/fa";
+import { FaPencilAlt, FaCheckSquare, FaEdit } from "react-icons/fa";
 import ModalHeading from "./ModalHeading";
+import DeleteModal from "./DeleteModal";
 
 const fontSize = {
   sm: "sm",
@@ -133,7 +134,6 @@ const Todo = ({ id, complete, text }) => {
         console.error(err);
       });
   };
-
   return (
     <Flex
       p={{ sm: "6", md: "5" }}
@@ -183,51 +183,54 @@ const Todo = ({ id, complete, text }) => {
           aria-label="update todo"
           icon={<FaEdit />}
         />
-        {/* Flex child 3 */}
-        <IconButton
-          size="sm"
-          bg="gray.200"
-          _hover={{ bg: "gray.300" }}
-          _focus={{ bg: "gray.200" }}
-          className="remove-todo"
-         onClick={() => onDeleteTodo(id)}
-          aria-label="remove todo"
-          icon={<FaTrash />}
-        />
-        {/* Flex child 4 / EDIT modal */}
-        <Modal isOpen={isOpen} onClose={onClose}>
-          <ModalOverlay />
-          <ModalContent maxW={{ sm: "sm", md: "lg" }}>
-            <ModalHeading />
 
-            <form onSubmit={onUpdateTodo}>
-              <ModalBody>
-                <Textarea
-                  fontSize={fontSize}
-                  required
-                  placeholder={text}
-                  type="text"
-                  required
-                  value={editedTodo}
-                  onChange={(e) => setEditedTodo(e.target.value)}
-                />
-              </ModalBody>
-              <ModalFooter>
-                <Button
-                  fontSize={fontSize}
-                  className="update-todo"
-                  type="submit"
-                  colorScheme="orange"
-                  bg="orange.400"
-                  onClick={onClose}
-                >
-                  Save
-                </Button>
-              </ModalFooter>
-            </form>
-          </ModalContent>
-        </Modal>
+        {/* Flex child 3 */}
+        <DeleteModal modalBody="Are you sure you want to delete this task?">
+          <Button
+            fontSize={fontSize}
+            className="update-todo"
+            type="submit"
+            colorScheme="orange"
+            bg="orange.400"
+            _focus=""
+            onClick={() => onDeleteTodo(id)}
+          >
+            Delete
+          </Button>
+        </DeleteModal>
       </Flex>
+      {/* EDIT MODAL */}
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent maxW={{ sm: "xs", md: "sm" }}>
+          <ModalHeading />
+          <form onSubmit={onUpdateTodo}>
+            <ModalBody>
+              <Textarea
+                fontSize={fontSize}
+                placeholder={text}
+                type="text"
+                required
+                value={editedTodo}
+                onChange={(e) => setEditedTodo(e.target.value)}
+              />
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                fontSize={fontSize}
+                className="update-todo"
+                type="submit"
+                colorScheme="orange"
+                bg="orange.400"
+                onClick={onClose}
+                _focus=""
+              >
+                Save
+              </Button>
+            </ModalFooter>
+          </form>
+        </ModalContent>
+      </Modal>
     </Flex>
   );
 };

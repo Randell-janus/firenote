@@ -24,7 +24,7 @@ import {
 import { FaPencilAlt, FaCheckSquare, FaEdit } from "react-icons/fa";
 import EditHeading from "./EditHeading";
 import DeleteModal from "./DeleteModal";
-import {completeStyle} from './theme'
+import { completeStyle } from "./theme";
 
 const Todos = () => {
   const [todo, setTodo] = useState("");
@@ -55,7 +55,7 @@ const Todos = () => {
           fontSize={{ base: "4xl", md: "5xl" }}
           lineHeight={"30%"}
           textDecoration="underline"
-          color={useColorModeValue("gray.900", "gray.200")}
+          color={useColorModeValue("gray.800", "gray.200")}
         >
           fire
           <Text as={"span"} textStyle="reg">
@@ -189,10 +189,9 @@ const Todo = ({ id, complete, text }) => {
           <Button
             fontSize={["sm", "sm", "md"]}
             type="submit"
-            colorScheme="red"
             layerStyle="reg"
             color="white"
-            _hover={{ bg: "red.400" }}
+            _hover={{ layerStyle: "hover" }}
             _focus=""
             onClick={() => onDeleteTodo(id)}
           >
@@ -201,7 +200,7 @@ const Todo = ({ id, complete, text }) => {
         </DeleteModal>
       </Flex>
       {/* EDIT MODAL */}
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent
           maxW={{ base: "xs", md: "sm" }}
@@ -222,10 +221,9 @@ const Todo = ({ id, complete, text }) => {
             <ModalFooter>
               <Button
                 fontSize={["sm", "sm", "md"]}
-                colorScheme="red"
                 layerStyle="reg"
                 color="white"
-                _hover={{ bg: "red.400" }}
+                _hover={{ layerStyle: "hover" }}
                 _focus=""
                 type="submit"
                 onClick={onClose}

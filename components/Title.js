@@ -8,7 +8,7 @@ const FirenoteLogo = () => {
         fontSize={["7xl", "7xl", "8xl"]}
         lineHeight={"30%"}
         textDecoration="underline"
-        color={useColorModeValue('gray.900', 'gray.200')}
+        color={useColorModeValue('gray.800', 'gray.200')}
       >
         fire
         <Text as={"span"} textStyle="reg">

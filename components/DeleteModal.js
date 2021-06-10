@@ -28,7 +28,7 @@ const DeleteModal = ({ modalBody, children }) => {
         aria-label="remove todo"
         icon={<FaTrash />}
       />
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent
           maxW={{ base: "xs", md: "sm" }}

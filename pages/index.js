@@ -4,6 +4,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import Todos from "../components/Todos";
 import Hero from "../components/Hero";
 
+
 export default function Home() {
   const [user] = useAuthState(auth);
 

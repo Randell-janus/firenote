@@ -4,7 +4,6 @@ import {
   Container,
   Stack,
   Button,
-  useColorModeValue,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -26,16 +25,6 @@ const signInWithGoogle = () => {
 const signInAsGuest = () => {
   auth.signInAnonymously();
 };
-const fontSize = {
-  Regular: {
-    base: "sm",
-    md: "md",
-  },
-  Header: {
-    base: "md",
-    md: "xl",
-  },
-};
 
 export default function Hero() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -44,7 +33,7 @@ export default function Hero() {
     <Container
       h="100vh"
       maxW="100%"
-      bg={useColorModeValue("gray.50", "gray.800")}
+      // bg={useColorModeValue("gray.50", "gray.800")}
     >
       {/* Main stack */}
       <Stack
@@ -60,11 +49,10 @@ export default function Hero() {
           {/* Stack child button 1 */}
           <Button
             px={9}
-            colorScheme={"orange"}
+            colorScheme="orange"
             bg={"orange.400"}
             _hover={{ bg: "orange.300" }}
             _focus={{ bg: "orange.400" }}
-            fontSize={fontSize.Regular}
             leftIcon={<FaGoogle />}
             onClick={signInWithGoogle}
           >
@@ -72,11 +60,10 @@ export default function Hero() {
           </Button>
           {/* Stack child button 2 */}
           <Button
-            colorScheme={"blackAlpha"}
+            colorScheme="white"
             bg={"gray.800"}
             _hover={{ bg: "gray.700" }}
             _focus={{ bg: "gray.800" }}
-            fontSize={fontSize.Regular}
             leftIcon={<RiSpyLine />}
             onClick={onOpen}
           >
@@ -84,11 +71,7 @@ export default function Hero() {
           </Button>
           {/* Stack child button 3 */}
           <Link href="https://github.com/Randell-janus/next.js-firebase">
-            <Button
-              variant="outline"
-              fontSize={fontSize.Regular}
-              leftIcon={<FaGithub />}
-            >
+            <Button variant="outline" leftIcon={<FaGithub />} _focus="">
               View Source
             </Button>
           </Link>
@@ -97,35 +80,30 @@ export default function Hero() {
       {/* Main modal */}
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
-        <ModalContent maxW={{ base: "xs", md: "sm" }}>
-          <ModalHeader display="flex" fontSize={fontSize.Header}>
+        <ModalContent maxW={["xs", "xs", "sm"]}>
+          <ModalHeader display="flex">
             <Flex align="center">
               <RiSpyLine />
             </Flex>
-            <Flex ml={2}>Anonymous Login</Flex>
+            <Flex ml={2} fontSize={["md", "md", "lg"]}>
+              Anonymous Login
+            </Flex>
           </ModalHeader>
           <ModalCloseButton _focus="" />
-          <ModalBody fontSize={fontSize.Regular} textAlign="justify">
+          <ModalBody textAlign="justify" fontSize={["sm", "sm", "md"]}>
             Feel free to create some task and test out the CRUD functionality of
             the app. Note that you will lose access to any created task once you
             sign out as a guest.
           </ModalBody>
           <ModalFooter>
-            <Button
-              fontSize={fontSize.Regular}
-              variant="ghost"
-              mr={3}
-              _focus=""
-              onClick={onClose}
-            >
+            <Button variant="ghost" mr={3} _focus="" onClick={onClose}>
               Cancel
             </Button>
             <Button
-              colorScheme={"orange"}
-              bg={"orange.400"}
+              colorScheme="orange"
+              bg="orange.400"
               _hover={{ bg: "orange.300" }}
               _focus={{ bg: "orange.400" }}
-              fontSize={fontSize.Regular}
               onClick={signInAsGuest}
             >
               Proceed

@@ -25,11 +25,6 @@ import { FaPencilAlt, FaCheckSquare, FaEdit } from "react-icons/fa";
 import ModalHeading from "./ModalHeading";
 import DeleteModal from "./DeleteModal";
 
-const fontSize = {
-  base: "sm",
-  md: "md",
-};
-
 const Todos = () => {
   const [todo, setTodo] = useState("");
   const todosRef = firestore.collection(`users/${auth.currentUser.uid}/todos`);
@@ -85,7 +80,7 @@ const Todos = () => {
               required
               value={todo}
               onChange={(e) => setTodo(e.target.value)}
-              fontSize={fontSize}
+              fontSize={["sm", "sm", "md"]}
               placeholder={"Got an idea?"}
               type={"text"}
               color={useColorModeValue("gray.800", "gray.200")}
@@ -97,7 +92,7 @@ const Todos = () => {
               _hover={{ bg: "orange.200" }}
               _focus={{ bg: "orange.400" }}
               colorScheme={"orange"}
-              fontSize={fontSize}
+              fontSize={["sm", "sm", "md"]}
               leftIcon={<FaPencilAlt />}
             >
               Add to list
@@ -154,7 +149,13 @@ const Todo = ({ id, complete, text }) => {
         mb={{ base: "8", md: "0" }}
         textAlign="justify"
       >
-        <Container fontSize={fontSize} maxW="md" mr={{ base: "0", md: "4" }}>
+        <Container
+          color="gray.500"
+          fontWeight="400"
+          fontSize={["sm", "sm", "md"]}
+          maxW="md"
+          mr={{ base: "0", md: "4" }}
+        >
           {text}
         </Container>
       </Flex>
@@ -187,7 +188,7 @@ const Todo = ({ id, complete, text }) => {
         {/* Flex child 3 */}
         <DeleteModal modalBody="Are you sure you want to delete this task?">
           <Button
-            fontSize={fontSize}
+            fontSize={["sm", "sm", "md"]}
             className="update-todo"
             type="submit"
             colorScheme="orange"
@@ -207,7 +208,7 @@ const Todo = ({ id, complete, text }) => {
           <form onSubmit={onUpdateTodo}>
             <ModalBody>
               <Textarea
-                fontSize={fontSize}
+                fontSize={["sm", "sm", "md"]}
                 placeholder={text}
                 type="text"
                 required
@@ -217,7 +218,7 @@ const Todo = ({ id, complete, text }) => {
             </ModalBody>
             <ModalFooter>
               <Button
-                fontSize={fontSize}
+                fontSize={["sm", "sm", "md"]}
                 className="update-todo"
                 type="submit"
                 colorScheme="orange"

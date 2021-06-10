@@ -22,7 +22,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { FaPencilAlt, FaCheckSquare, FaEdit } from "react-icons/fa";
-import ModalHeading from "./ModalHeading";
+import EditHeading from "./EditHeading";
 import DeleteModal from "./DeleteModal";
 
 const Todos = () => {
@@ -49,15 +49,15 @@ const Todos = () => {
     >
       {/* Main stack child 1 */}
       <Stack direction="column" align={"center"} spacing={{ base: 4, md: 6 }}>
-        <Heading fontSize={{ base: "2xl", md: "4xl" }}>🔥</Heading>
         <Heading
           fontWeight={700}
           fontSize={{ base: "4xl", md: "5xl" }}
           lineHeight={"30%"}
           textDecoration="underline"
+          color={useColorModeValue("gray.900", "gray.200")}
         >
           fire
-          <Text as={"span"} color={"orange.400"}>
+          <Text as={"span"} color={"red.500"}>
             note
           </Text>
         </Heading>
@@ -65,7 +65,7 @@ const Todos = () => {
       {/* Main stack child 2 */}
       <Box
         w={{ base: "sm", md: "2xl" }}
-        bg={useColorModeValue("gray.50", "gray.900")}
+        bg={useColorModeValue("gray.50", "gray.800")}
         boxShadow={"xl"}
         rounded={"lg"}
         p={6}
@@ -88,10 +88,11 @@ const Todos = () => {
             <Button
               type="submit"
               px={14}
-              bg={"orange.400"}
-              _hover={{ bg: "orange.200" }}
-              _focus={{ bg: "orange.400" }}
-              colorScheme={"orange"}
+              colorScheme="red"
+              layerStyle="reg"
+              color="white"
+              _hover={{ bg: "red.400" }}
+              _focus=""
               fontSize={["sm", "sm", "md"]}
               leftIcon={<FaPencilAlt />}
             >
@@ -137,7 +138,7 @@ const Todo = ({ id, complete, text }) => {
       align="center"
       justify="space-between"
       direction={{ base: "column", md: "row" }}
-      boxShadow={"xs"}
+      boxShadow={"md"}
       rounded="md"
       bg={useColorModeValue("gray.50", "gray.900")}
     >
@@ -146,12 +147,14 @@ const Todo = ({ id, complete, text }) => {
         className={`todo-item ${complete ? "complete" : ""}`}
         tabIndex="0"
         textDecoration={complete ? "line-through" : ""}
+        textDecorationThickness={3}
+        textDecorationColor='red.500'
         mb={{ base: "8", md: "0" }}
         textAlign="justify"
       >
         <Container
-          color="gray.500"
-          fontWeight="400"
+          color={useColorModeValue("black", "gray.50")}
+          fontWeight="500"
           fontSize={["sm", "sm", "md"]}
           maxW="md"
           mr={{ base: "0", md: "4" }}
@@ -164,22 +167,18 @@ const Todo = ({ id, complete, text }) => {
         {/* Flex child 1 */}
         <IconButton
           size="sm"
-          bg="gray.200"
-          _hover={{ bg: "gray.300" }}
-          _focus={{ bg: "gray.200" }}
-          className="complete-todo"
+          _hover={{ bg: useColorModeValue("gray.200", "gray.700") }}
+          _focus=""
           onClick={() => onCompleteTodo(id, complete)}
           aria-label="complete todo"
           icon={<FaCheckSquare />}
         />
         {/* Flex child 2 */}
         <IconButton
-          size="sm"
           mx={{ base: "2", md: "3" }}
-          bg="gray.200"
-          _hover={{ bg: "gray.300" }}
-          _focus={{ bg: "gray.200" }}
-          className="update-todo"
+          size="sm"
+          _hover={{ bg: useColorModeValue("gray.200", "gray.700") }}
+          _focus=""
           onClick={onOpen}
           aria-label="update todo"
           icon={<FaEdit />}
@@ -189,10 +188,11 @@ const Todo = ({ id, complete, text }) => {
         <DeleteModal modalBody="Are you sure you want to delete this task?">
           <Button
             fontSize={["sm", "sm", "md"]}
-            className="update-todo"
             type="submit"
-            colorScheme="orange"
-            bg="orange.400"
+            colorScheme="red"
+            layerStyle="reg"
+            color="white"
+            _hover={{ bg: "red.400" }}
             _focus=""
             onClick={() => onDeleteTodo(id)}
           >
@@ -203,8 +203,11 @@ const Todo = ({ id, complete, text }) => {
       {/* EDIT MODAL */}
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent maxW={{ base: "xs", md: "sm" }}>
-          <ModalHeading />
+        <ModalContent
+          maxW={{ base: "xs", md: "sm" }}
+          bg={useColorModeValue("gray.50", "gray.800")}
+        >
+          <EditHeading />
           <form onSubmit={onUpdateTodo}>
             <ModalBody>
               <Textarea
@@ -219,12 +222,13 @@ const Todo = ({ id, complete, text }) => {
             <ModalFooter>
               <Button
                 fontSize={["sm", "sm", "md"]}
-                className="update-todo"
-                type="submit"
-                colorScheme="orange"
-                bg="orange.400"
-                onClick={onClose}
+                colorScheme="red"
+                layerStyle="reg"
+                color="white"
+                _hover={{ bg: "red.400" }}
                 _focus=""
+                type="submit"
+                onClick={onClose}
               >
                 Save
               </Button>

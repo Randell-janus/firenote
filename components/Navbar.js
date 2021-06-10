@@ -5,11 +5,13 @@ import {
   Box,
   Flex,
   Button,
+  IconButton,
+  useColorMode,
   useColorModeValue,
-  Heading,
 } from "@chakra-ui/react";
 import { AiOutlineGoogle } from "react-icons/ai";
 import { BiLogOut } from "react-icons/bi";
+import { RiMoonClearFill, RiSunFill } from "react-icons/ri";
 
 const signInWithGoogle = () => {
   auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
@@ -17,31 +19,41 @@ const signInWithGoogle = () => {
 
 export default function Navbar() {
   const [user] = useAuthState(auth);
+  const { colorMode, toggleColorMode } = useColorMode();
+
   const signOut = () => {
     setTimeout(() => {
       auth.signOut();
     }, 0);
   };
-
   return (
     <>
-      <Box bg={useColorModeValue("orange.400", "gray.900")}>
+      <Box layerStyle="reg">
         {/* Main flex container */}
         <Flex
           align={"center"}
-          justify={"space-between"}
+          justify="space-between"
           maxW={{ base: "sm", md: "2xl" }}
           mx="auto"
-          h={16}
+          h={14}
         >
-          <Heading size="lg">🔥</Heading>
+          <IconButton
+            onClick={toggleColorMode}
+            size="sm"
+            variant={"solid"}
+            bg={useColorModeValue("gray.50", "gray.800")}
+            color={useColorModeValue("gray.900", "gray.50")}
+            _hover={{ bg: useColorModeValue("gray.200", "gray.900") }}
+            icon={colorMode === "light" ? <RiMoonClearFill /> : <RiSunFill />}
+            _focus=""
+          />
           <Button
             size="sm"
             variant={"solid"}
-            bg={"gray.50"}
-            _hover={{ bg: "gray.200" }}
-            _focus={{ bg: "gray.50" }}
-            color={"orange.400"}
+            bg={useColorModeValue("gray.50", "gray.800")}
+            color={useColorModeValue("gray.900", "gray.50")}
+            _hover={{ bg: useColorModeValue("gray.200", "gray.900") }}
+            _focus=""
             fontSize={{ base: "xs", md: "sm" }}
             leftIcon={user ? <BiLogOut /> : <AiOutlineGoogle />}
             onClick={user ? signOut : signInWithGoogle}

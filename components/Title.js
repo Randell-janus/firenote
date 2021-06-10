@@ -1,22 +1,21 @@
-import { Heading, Text } from "@chakra-ui/react";
+import { Heading, Text, useColorModeValue } from "@chakra-ui/react";
 
 const FirenoteLogo = () => {
   return (
     <>
-      <Heading fontSize={{ base: "5xl", md: "7xl" }}>🔥</Heading>
       <Heading
         fontWeight={700}
-        // fontSize={{ base: "7xl", md: "8xl" }}
-        fontSize={['7xl','7xl','8xl']}
+        fontSize={["7xl", "7xl", "8xl"]}
         lineHeight={"30%"}
         textDecoration="underline"
+        color={useColorModeValue("gray.900", "gray.200")}
       >
         fire
-        <Text as={"span"} color={"orange.400"}>
+        <Text as={"span"} color={'red.500'}>
           note
         </Text>
       </Heading>
-      <Text py={6} color={"gray.500"} fontSize={['md','md','xl']}>
+      <Text py={6} color={"gray.500"} fontSize={["md", "md", "xl"]}>
         Got an idea? Take a quick firenote!
       </Text>
     </>

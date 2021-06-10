@@ -1,6 +1,5 @@
 import {
   Button,
-  useColorModeValue,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -8,6 +7,7 @@ import {
   ModalBody,
   useDisclosure,
   IconButton,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { FaTrash } from "react-icons/fa";
 
@@ -22,18 +22,19 @@ const DeleteModal = ({ modalBody, children }) => {
     <>
       <IconButton
         size="sm"
-        bg="gray.200"
-        _hover={{ bg: "gray.300" }}
-        _focus={{ bg: "gray.200" }}
-        className="remove-todo"
+        _hover={{ bg: useColorModeValue("gray.200", "gray.700") }}
+        _focus=""
         onClick={onOpen}
         aria-label="remove todo"
         icon={<FaTrash />}
       />
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent maxW={{ base: "xs", md: "sm" }}>
-          <ModalBody pt={6} fontSize={fontSize}>
+        <ModalContent
+          maxW={{ base: "xs", md: "sm" }}
+          bg={useColorModeValue("gray.50", "gray.800")}
+        >
+          <ModalBody pt={6} fontSize={["sm", null, "md"]}>
             {modalBody}
           </ModalBody>
           <ModalFooter>

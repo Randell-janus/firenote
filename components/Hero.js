@@ -13,6 +13,7 @@ import {
   ModalCloseButton,
   useDisclosure,
   Flex,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { FaGoogle, FaGithub } from "react-icons/fa";
 import { RiSpyLine } from "react-icons/ri";
@@ -31,13 +32,12 @@ export default function Hero() {
 
   return (
     <Container
-      h="100vh"
-      maxW="100%"
-      // bg={useColorModeValue("gray.50", "gray.800")}
+    // bg={useColorModeValue("gray.50", "gray.800")}
     >
       {/* Main stack */}
       <Stack
-        height="80vh"
+        height="90vh"
+        maxW="100%"
         align={"center"}
         justify="center"
         spacing={{ base: 8, md: 10 }}
@@ -49,10 +49,11 @@ export default function Hero() {
           {/* Stack child button 1 */}
           <Button
             px={9}
-            colorScheme="orange"
-            bg={"orange.400"}
-            _hover={{ bg: "orange.300" }}
-            _focus={{ bg: "orange.400" }}
+            colorScheme="red"
+            layerStyle="reg"
+            color="white"
+            _hover={{ bg: "red.400" }}
+            _focus=""
             leftIcon={<FaGoogle />}
             onClick={signInWithGoogle}
           >
@@ -61,9 +62,9 @@ export default function Hero() {
           {/* Stack child button 2 */}
           <Button
             colorScheme="white"
-            bg={"gray.800"}
-            _hover={{ bg: "gray.700" }}
-            _focus={{ bg: "gray.800" }}
+            bg={useColorModeValue("gray.900", "gray.200")}
+            _hover={{ bg: useColorModeValue("gray.700", "gray.300") }}
+            _focus=""
             leftIcon={<RiSpyLine />}
             onClick={onOpen}
           >
@@ -80,7 +81,10 @@ export default function Hero() {
       {/* Main modal */}
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
-        <ModalContent maxW={["xs", "xs", "sm"]}>
+        <ModalContent
+          maxW={["xs", "xs", "sm"]}
+          bg={useColorModeValue("gray.50", "gray.800")}
+        >
           <ModalHeader display="flex">
             <Flex align="center">
               <RiSpyLine />
@@ -90,7 +94,7 @@ export default function Hero() {
             </Flex>
           </ModalHeader>
           <ModalCloseButton _focus="" />
-          <ModalBody textAlign="justify" fontSize={["sm", "sm", "md"]}>
+          <ModalBody textAlign="justify" fontSize={["sm", null, "md"]}>
             Feel free to create some task and test out the CRUD functionality of
             the app. Note that you will lose access to any created task once you
             sign out as a guest.
@@ -100,10 +104,11 @@ export default function Hero() {
               Cancel
             </Button>
             <Button
-              colorScheme="orange"
-              bg="orange.400"
-              _hover={{ bg: "orange.300" }}
-              _focus={{ bg: "orange.400" }}
+              colorScheme="red"
+              layerStyle="reg"
+              color="white"
+              _hover={{ bg: "red.400" }}
+              _focus=""
               onClick={signInAsGuest}
             >
               Proceed

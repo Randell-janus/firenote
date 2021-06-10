@@ -2,11 +2,15 @@ import { extendTheme } from "@chakra-ui/react";
 
 export const theme = extendTheme({
   styles: {
-    global: {
+    global: (props) => ({
       body: {
-        bg: "gray.50",
+        bg: props.colorMode === "dark" ? "gray.900" : "gray.50",
       },
-    },
+    }),
+  },
+  config: {
+    initialColorMode: "light",
+    useSystemColorMode: false,
   },
   textStyles: {
     mdmdlg: {
@@ -14,6 +18,14 @@ export const theme = extendTheme({
     },
     smsmmd: {
       fontSize: ["sm", "sm", "md"],
+    },
+  },
+  layerStyles: {
+    reg: {
+      bgColor: "red.500",
+    },
+    white: {
+      color: "white",
     },
   },
   components: {

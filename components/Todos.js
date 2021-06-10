@@ -24,6 +24,7 @@ import {
 import { FaPencilAlt, FaCheckSquare, FaEdit } from "react-icons/fa";
 import EditHeading from "./EditHeading";
 import DeleteModal from "./DeleteModal";
+import {completeStyle} from './theme'
 
 const Todos = () => {
   const [todo, setTodo] = useState("");
@@ -57,7 +58,7 @@ const Todos = () => {
           color={useColorModeValue("gray.900", "gray.200")}
         >
           fire
-          <Text as={"span"} color={"red.500"}>
+          <Text as={"span"} textStyle="reg">
             note
           </Text>
         </Heading>
@@ -88,10 +89,9 @@ const Todos = () => {
             <Button
               type="submit"
               px={14}
-              colorScheme="red"
               layerStyle="reg"
               color="white"
-              _hover={{ bg: "red.400" }}
+              _hover={{ layerStyle: "hover" }}
               _focus=""
               fontSize={["sm", "sm", "md"]}
               leftIcon={<FaPencilAlt />}
@@ -148,7 +148,7 @@ const Todo = ({ id, complete, text }) => {
         tabIndex="0"
         textDecoration={complete ? "line-through" : ""}
         textDecorationThickness={3}
-        textDecorationColor='red.500'
+        textDecorationColor={completeStyle}
         mb={{ base: "8", md: "0" }}
         textAlign="justify"
       >

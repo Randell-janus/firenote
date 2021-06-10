@@ -1,4 +1,4 @@
-import { extendTheme } from "@chakra-ui/react";
+import { extendTheme, useColorModeValue } from "@chakra-ui/react";
 
 export const theme = extendTheme({
   styles: {
@@ -13,19 +13,16 @@ export const theme = extendTheme({
     useSystemColorMode: true,
   },
   textStyles: {
-    mdmdlg: {
-      fontSize: ["md", "md", "lg"],
-    },
-    smsmmd: {
-      fontSize: ["sm", "sm", "md"],
+    reg: {
+      color: "blue.300",
     },
   },
   layerStyles: {
     reg: {
-      bgColor: "red.500",
+      bgColor: "blue.300",
     },
-    white: {
-      color: "white",
+    hover: {
+      bgColor: "blue.200",
     },
   },
   components: {
@@ -38,3 +35,5 @@ export const theme = extendTheme({
     },
   },
 });
+
+export const completeStyle = "blue.300";

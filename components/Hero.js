@@ -49,10 +49,9 @@ export default function Hero() {
           {/* Stack child button 1 */}
           <Button
             px={9}
-            colorScheme="red"
             layerStyle="reg"
             color="white"
-            _hover={{ bg: "red.400" }}
+            _hover={{ layerStyle: "hover" }}
             _focus=""
             leftIcon={<FaGoogle />}
             onClick={signInWithGoogle}
@@ -104,10 +103,10 @@ export default function Hero() {
               Cancel
             </Button>
             <Button
-              colorScheme="red"
               layerStyle="reg"
               color="white"
-              _hover={{ bg: "red.400" }}
+              // _hover={{ bg: "red.400" }}
+              _hover={{ layerStyle: "hover" }}
               _focus=""
               onClick={signInAsGuest}
             >

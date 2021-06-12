@@ -1,10 +1,10 @@
-import { extendTheme, useColorModeValue } from "@chakra-ui/react";
+import { extendTheme } from "@chakra-ui/react";
 
 export const theme = extendTheme({
   styles: {
     global: (props) => ({
       body: {
-        bg: props.colorMode === "dark" ? "gray.900" : "gray.50",
+        bg: props.colorMode === "dark" ? "gray.800" : "gray.50",
       },
     }),
   },
@@ -16,6 +16,9 @@ export const theme = extendTheme({
     reg: {
       color: "blue.300",
     },
+    white: {
+      color: "white",
+    },
   },
   layerStyles: {
     reg: {
@@ -23,6 +26,9 @@ export const theme = extendTheme({
     },
     hover: {
       bgColor: "blue.200",
+    },
+    gray: {
+      bgColor: "gray.200",
     },
   },
   components: {

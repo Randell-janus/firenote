@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { auth, firestore } from "../firebase/firebase";
 import {
+  Container,
+  VStack,
   Text,
   useColorModeValue,
   Flex,
@@ -13,9 +15,6 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
-  Editable,
-  EditablePreview,
-  EditableInput,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -25,10 +24,11 @@ import {
 } from "@chakra-ui/react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { BsThreeDots, BsCircle, BsCheckCircle } from "react-icons/bs";
+import { MdAdd } from "react-icons/md";
 
 const Todo = ({ id, complete, text, content }) => {
   const todosRef = firestore.collection(`users/${auth.currentUser.uid}/todos`);
-
+  const [body, setBody] = useState("");
   const [editedTodo, setEditedTodo] = useState("");
   const [editedBody, setEditedBody] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -72,77 +72,70 @@ const Todo = ({ id, complete, text, content }) => {
             fontWeight="500"
             fontSize={["sm", null, "md"]}
           >
-            <Editable
-              defaultValue={text}
-              placeholder="Add task title"
-              onSubmit={onUpdateTodo}
-              maxW={["xs", null, "xl"]}
-            >
-              <EditablePreview cursor="pointer" maxW={["xs", null, "xl"]} />
-              <EditableInput
-                maxLength="20"
-                onChange={(e) => setEditedTodo(e.target.value)}
-                _focus=""
-              />
-            </Editable>
+            {text}
           </Text>
           <AccordionIcon />
         </AccordionButton>
 
         <AccordionPanel
           fontSize={["sm", null, "md"]}
-          display="flex"
-          justifyContent="space-between"
+          // display="flex"
+          // justifyContent="space-between"
         >
-          <Flex maxW={["xs", null, "xl"]} align="center">
-            <Text
-              cursor="pointer"
-              as="span"
-              onClick={() => onCompleteTodo(id, complete)}
-            >
-              {complete ? <BsCheckCircle /> : <BsCircle />}
-            </Text>
-            <Editable
-              ml={2}
-              defaultValue={content}
-              placeholder="Add task details"
-              onSubmit={onUpdateBody}
-            >
-              <EditablePreview cursor="pointer" w={["xs", null, "xl"]} />
-
-              <EditableInput
-                maxLength="360"
-                onChange={(e) => setEditedBody(e.target.value)}
-                _focus=""
-                w={["xs", null, "xl"]}
-              />
-            </Editable>
-          </Flex>
-
-          <Menu>
-            <Flex align="flex-start">
-              <MenuButton aria-label="Options" mr={0.5}>
-                <BsThreeDots cursor="pointer" />
-              </MenuButton>
-            </Flex>
-            <MenuList
-              fontSize={["xs", null, "sm"]}
-              bg={useColorModeValue("gray.50", "gray.800")}
-            >
-              <MenuItem
-                icon={complete ? <BsCheckCircle /> : <BsCircle />}
+          <VStack>
+            <Flex alignItems="center">
+              {/* <Flex maxW={["xs", null, "xl"]} align="center"> */}
+              <Text
+                cursor="pointer"
+                as="span"
                 onClick={() => onCompleteTodo(id, complete)}
               >
-                Mark status
-              </MenuItem>
-              <MenuItem icon={<FaEdit />} onClick={onOpen}>
-                Editing guide
-              </MenuItem>
-              <MenuItem icon={<FaTrash />} onClick={() => onDeleteTodo(id)}>
-                Delete task
-              </MenuItem>
-            </MenuList>
-          </Menu>
+                {complete ? <BsCheckCircle /> : <BsCircle />}
+              </Text>
+              <Container w={["2xs", null, "xl"]} py={2}>
+                {content}
+              </Container>
+              {/* </Flex> */}
+              <Menu>
+                {/* <Flex align="center"> */}
+                <MenuButton aria-label="Options" mr={0.5}>
+                  <BsThreeDots cursor="pointer" />
+                </MenuButton>
+                {/* </Flex> */}
+                <MenuList
+                  fontSize={["xs", null, "sm"]}
+                  bg={useColorModeValue("gray.50", "gray.800")}
+                >
+                  <MenuItem
+                    icon={complete ? <BsCheckCircle /> : <BsCircle />}
+                    onClick={() => onCompleteTodo(id, complete)}
+                  >
+                    Mark status
+                  </MenuItem>
+                  <MenuItem icon={<FaEdit />} onClick={onOpen}>
+                    Editing guide
+                  </MenuItem>
+                  <MenuItem icon={<FaTrash />} onClick={() => onDeleteTodo(id)}>
+                    Delete task
+                  </MenuItem>
+                </MenuList>
+              </Menu>
+            </Flex>
+            <Container
+              display="flex"
+              alignItems="center"
+              maxW={["xs", null, "xl"]}
+              justifyContent="center"
+              cursor="pointer"
+              _hover={{ textStyle: "reg" }}
+              color="gray.400"
+            >
+              <MdAdd />
+              <Text ml={2} fontWeight="500" fontSize={["sm", null, "md"]}>
+                Add task
+              </Text>
+            </Container>
+          </VStack>
         </AccordionPanel>
       </AccordionItem>
 

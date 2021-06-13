@@ -1,26 +1,14 @@
 import { useState } from "react";
 import { auth, firestore } from "../firebase/firebase";
-import { useCollectionData } from "react-firebase-hooks/firestore";
 import {
-  Container,
-  Box,
   Text,
-  Button,
   useColorModeValue,
-  Textarea,
   Flex,
-  IconButton,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalFooter,
-  ModalBody,
-  useDisclosure,
+  Button,
   AccordionItem,
   AccordionButton,
   AccordionIcon,
   AccordionPanel,
-  Checkbox,
   Menu,
   MenuButton,
   MenuList,
@@ -28,15 +16,18 @@ import {
   Editable,
   EditablePreview,
   EditableInput,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
 } from "@chakra-ui/react";
-import { FaCheckSquare, FaEdit, FaTrash } from "react-icons/fa";
-import { BsThreeDots } from "react-icons/bs";
-import EditHeading from "./EditHeading";
-import { completeStyle } from "./theme";
+import { FaEdit, FaTrash } from "react-icons/fa";
+import { BsThreeDots, BsCircle, BsCheckCircle } from "react-icons/bs";
 
 const Todo = ({ id, complete, text, content }) => {
   const todosRef = firestore.collection(`users/${auth.currentUser.uid}/todos`);
-  const [bodies] = useCollectionData(todosRef, { idField: "id" });
 
   const [editedTodo, setEditedTodo] = useState("");
   const [editedBody, setEditedBody] = useState("");
@@ -49,7 +40,6 @@ const Todo = ({ id, complete, text, content }) => {
     todosRef.doc(id).delete();
   };
   const onUpdateTodo = (e) => {
-    // e.preventDefault();
     setEditedTodo("");
     todosRef
       .doc(id)
@@ -61,7 +51,6 @@ const Todo = ({ id, complete, text, content }) => {
       });
   };
   const onUpdateBody = (e) => {
-    // e.preventDefault();
     setEditedBody("");
     todosRef
       .doc(id)
@@ -74,36 +63,24 @@ const Todo = ({ id, complete, text, content }) => {
   };
   return (
     <>
-      {/* <Flex align="center" justify="space-between">
-        <Flex>
-          <IconButton
-            onClick={() => onCompleteTodo(id, complete)}
-            aria-label="complete todo"
-            icon={<FaCheckSquare />}
-          />
-          <IconButton
-            onClick={onOpen}
-            aria-label="update todo"
-            icon={<FaEdit />}
-          />
-          <DeleteModal modalBody="Are you sure you want to delete this task?">
-            <Button onClick={() => onDeleteTodo(id)}>Delete</Button>
-          </DeleteModal>
-        </Flex>
-      </Flex> */}
-
       <AccordionItem>
         <AccordionButton _focus="">
           <Text
             flex="1"
             textAlign="left"
-            color="gray.800"
+            color={useColorModeValue("gray.800", "gray.50")}
             fontWeight="500"
             fontSize={["sm", null, "md"]}
           >
-            <Editable defaultValue={text} onSubmit={onUpdateTodo}>
-              <EditablePreview />
+            <Editable
+              defaultValue={text}
+              placeholder="Add task title"
+              onSubmit={onUpdateTodo}
+              maxW={["xs", null, "xl"]}
+            >
+              <EditablePreview cursor="pointer" maxW={["xs", null, "xl"]} />
               <EditableInput
+                maxLength="20"
                 onChange={(e) => setEditedTodo(e.target.value)}
                 _focus=""
               />
@@ -111,68 +88,79 @@ const Todo = ({ id, complete, text, content }) => {
           </Text>
           <AccordionIcon />
         </AccordionButton>
+
         <AccordionPanel
           fontSize={["sm", null, "md"]}
-          // maxW={["xs", null, "md"]}
           display="flex"
           justifyContent="space-between"
         >
-          <Editable defaultValue={content} onSubmit={onUpdateBody}>
-            <EditablePreview />
-            <EditableInput
-              onChange={(e) => setEditedBody(e.target.value)}
-              _focus=""
-            />
-          </Editable>
+          <Flex maxW={["xs", null, "xl"]} align="center">
+            <Text
+              cursor="pointer"
+              as="span"
+              onClick={() => onCompleteTodo(id, complete)}
+            >
+              {complete ? <BsCheckCircle /> : <BsCircle />}
+            </Text>
+            <Editable
+              ml={2}
+              defaultValue={content}
+              placeholder="Add task details"
+              onSubmit={onUpdateBody}
+            >
+              <EditablePreview cursor="pointer" w={["xs", null, "xl"]} />
+
+              <EditableInput
+                maxLength="360"
+                onChange={(e) => setEditedBody(e.target.value)}
+                _focus=""
+                w={["xs", null, "xl"]}
+              />
+            </Editable>
+          </Flex>
+
           <Menu>
-            {/* <Box mt={1}>
-              <BsThreeDots cursor="pointer" />
-            </Box> */}
-            <MenuButton aria-label="Options" mr={0.5}>
-              <BsThreeDots cursor="pointer" />
-            </MenuButton>
-            <MenuList maxW="sm">
-              <MenuItem icon={<FaEdit />}>Edit</MenuItem>
+            <Flex align="flex-start">
+              <MenuButton aria-label="Options" mr={0.5}>
+                <BsThreeDots cursor="pointer" />
+              </MenuButton>
+            </Flex>
+            <MenuList
+              fontSize={["xs", null, "sm"]}
+              bg={useColorModeValue("gray.50", "gray.800")}
+            >
+              <MenuItem
+                icon={complete ? <BsCheckCircle /> : <BsCircle />}
+                onClick={() => onCompleteTodo(id, complete)}
+              >
+                Mark status
+              </MenuItem>
+              <MenuItem icon={<FaEdit />} onClick={onOpen}>
+                Editing guide
+              </MenuItem>
               <MenuItem icon={<FaTrash />} onClick={() => onDeleteTodo(id)}>
-                Delete
+                Delete task
               </MenuItem>
             </MenuList>
           </Menu>
         </AccordionPanel>
       </AccordionItem>
 
-      <Modal isOpen={isOpen} onClose={onClose} isCentered>
+      <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent
-          maxW={{ base: "xs", md: "sm" }}
+          maxW={["xs", "xs", "sm"]}
           bg={useColorModeValue("gray.50", "gray.800")}
+          py={2}
         >
-          <EditHeading />
-          <form onSubmit={onUpdateTodo}>
-            <ModalBody>
-              <Textarea
-                fontSize={["sm", "sm", "md"]}
-                placeholder={text}
-                type="text"
-                required
-                value={editedTodo}
-                onChange={(e) => setEditedTodo(e.target.value)}
-              />
-            </ModalBody>
-            <ModalFooter>
-              <Button
-                fontSize={["sm", "sm", "md"]}
-                layerStyle="reg"
-                color="white"
-                _hover={{ layerStyle: "hover" }}
-                _focus=""
-                type="submit"
-                onClick={onClose}
-              >
-                Save
-              </Button>
-            </ModalFooter>
-          </form>
+          <ModalBody fontSize={["sm", null, "md"]}>
+            You can edit the task title and content by clicking the text itself.
+          </ModalBody>
+          <ModalFooter>
+            <Button layerStyle="reg" color="white" _focus="" onClick={onClose}>
+              Got it!
+            </Button>
+          </ModalFooter>
         </ModalContent>
       </Modal>
     </>

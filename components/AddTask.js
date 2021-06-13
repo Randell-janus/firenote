@@ -9,7 +9,6 @@ import {
   Button,
   Input,
   Text,
-  TextArea,
   Popover,
   PopoverTrigger,
   PopoverContent,
@@ -64,7 +63,8 @@ const AddTask = () => {
               <PopoverTrigger>
                 <Flex
                   alignItems="center"
-                  mb={24}
+                  mb={[22, 22, 24]}
+                  // mb={24}
                   mt={2}
                   cursor="pointer"
                   _hover={{ textStyle: "reg" }}
@@ -86,6 +86,7 @@ const AddTask = () => {
                     <Input
                       p={1}
                       variant="Unstyled"
+                      maxLength="20"
                       placeholder="Add title"
                       bg={useColorModeValue("gray.50", "gray.800")}
                       fontSize={["sm", null, "md"]}
@@ -129,11 +130,7 @@ const AddTask = () => {
             </>
           )}
         </Popover>
-        {todos == false && (
-          <Box>
-            <Empty />
-          </Box>
-        )}
+        {todos == false && <Empty />}
       </Flex>
     </>
   );

@@ -3,7 +3,6 @@ import { useState, useRef } from "react";
 import { auth, firestore } from "../firebase/firebase";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import {
-  Box,
   Flex,
   Heading,
   Button,
@@ -64,7 +63,6 @@ const AddTask = () => {
                 <Flex
                   alignItems="center"
                   mb={[22, 22, 24]}
-                  // mb={24}
                   mt={2}
                   cursor="pointer"
                   _hover={{ textStyle: "reg" }}

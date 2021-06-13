@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { auth, firestore } from "../firebase/firebase";
 import {
   Container,
+  Box,
   VStack,
   Text,
   useColorModeValue,
@@ -21,17 +22,30 @@ import {
   ModalBody,
   ModalFooter,
   useDisclosure,
+  ModalHeader,
+  ModalCloseButton,
+  Input,
+  Tooltip,
+  Textarea,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody,
+  PopoverCloseButton,
+  useToast,
 } from "@chakra-ui/react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { BsThreeDots, BsCircle, BsCheckCircle } from "react-icons/bs";
-import { MdAdd } from "react-icons/md";
+import { BiHelpCircle } from "react-icons/bi";
 
 const Todo = ({ id, complete, text, content }) => {
   const todosRef = firestore.collection(`users/${auth.currentUser.uid}/todos`);
-  const [body, setBody] = useState("");
+  const initRef = useRef();
   const [editedTodo, setEditedTodo] = useState("");
   const [editedBody, setEditedBody] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const toast = useToast();
 
   const onCompleteTodo = (id, complete) => {
     todosRef.doc(id).set({ complete: !complete }, { merge: true });
@@ -39,7 +53,8 @@ const Todo = ({ id, complete, text, content }) => {
   const onDeleteTodo = (id) => {
     todosRef.doc(id).delete();
   };
-  const onUpdateTodo = (e) => {
+  const onUpdateTitle = (e) => {
+    e.preventDefault();
     setEditedTodo("");
     todosRef
       .doc(id)
@@ -51,6 +66,7 @@ const Todo = ({ id, complete, text, content }) => {
       });
   };
   const onUpdateBody = (e) => {
+    e.preventDefault();
     setEditedBody("");
     todosRef
       .doc(id)
@@ -77,14 +93,9 @@ const Todo = ({ id, complete, text, content }) => {
           <AccordionIcon />
         </AccordionButton>
 
-        <AccordionPanel
-          fontSize={["sm", null, "md"]}
-          // display="flex"
-          // justifyContent="space-between"
-        >
+        <AccordionPanel fontSize={["sm", null, "md"]}>
           <VStack>
             <Flex alignItems="center">
-              {/* <Flex maxW={["xs", null, "xl"]} align="center"> */}
               <Text
                 cursor="pointer"
                 as="span"
@@ -92,16 +103,66 @@ const Todo = ({ id, complete, text, content }) => {
               >
                 {complete ? <BsCheckCircle /> : <BsCircle />}
               </Text>
-              <Container w={["2xs", null, "xl"]} py={2}>
-                {content}
-              </Container>
-              {/* </Flex> */}
+              <Popover initialFocusRef={initRef}>
+                {({ onClose }) => (
+                  <>
+                    <PopoverTrigger>
+                      <Container w={["2xs", null, "xl"]} py={2}>
+                        <Tooltip
+                          hasArrow
+                          arrowSize={6}
+                          label="click to edit"
+                          bg={useColorModeValue("gray.700", "gray.200")}
+                        >
+                          {content}
+                        </Tooltip>
+                      </Container>
+                    </PopoverTrigger>
+                    <PopoverContent
+                      bg={useColorModeValue("gray.50", "gray.800")}
+                      w={["2xs", null, "sm"]}
+                    >
+                      <PopoverCloseButton _focus="" />
+                      <PopoverHeader fontWeight="500">
+                        Edit task details
+                      </PopoverHeader>
+                      <PopoverBody p={3}>
+                        <form onSubmit={onUpdateBody}>
+                          <Textarea
+                            p={1}
+                            ref={initRef}
+                            _focus=""
+                            variant="Unstyled"
+                            placeholder={content}
+                            bg={useColorModeValue("gray.50", "gray.800")}
+                            fontSize={["sm", null, "md"]}
+                            value={editedBody}
+                            onChange={(e) => setEditedBody(e.target.value)}
+                          ></Textarea>
+                          <Button
+                            size="sm"
+                            textStyle="white"
+                            layerStyle="reg"
+                            _hover={{ layerStyle: "hover" }}
+                            fontSize={["sm", null, "md"]}
+                            _focus=""
+                            mr={4}
+                            type="submit"
+                            onClick={onClose}
+                          >
+                            Save
+                          </Button>
+                        </form>
+                      </PopoverBody>
+                    </PopoverContent>
+                  </>
+                )}
+              </Popover>
+
               <Menu>
-                {/* <Flex align="center"> */}
                 <MenuButton aria-label="Options" mr={0.5}>
                   <BsThreeDots cursor="pointer" />
                 </MenuButton>
-                {/* </Flex> */}
                 <MenuList
                   fontSize={["xs", null, "sm"]}
                   bg={useColorModeValue("gray.50", "gray.800")}
@@ -113,7 +174,29 @@ const Todo = ({ id, complete, text, content }) => {
                     Mark status
                   </MenuItem>
                   <MenuItem icon={<FaEdit />} onClick={onOpen}>
-                    Editing guide
+                    Edit task title
+                  </MenuItem>
+                  <MenuItem
+                    icon={<BiHelpCircle />}
+                    onClick={() =>
+                      toast({
+                        duration: 9000,
+                        isClosable: true,
+                        render: () => (
+                          <Box
+                            color="white"
+                            p={4}
+                            bg="blue.300"
+                            rounded="md"
+                            maxW={["2xs", null, "sm"]}
+                          >
+                            Edit the task content by clicking the text itself
+                          </Box>
+                        ),
+                      })
+                    }
+                  >
+                    Help
                   </MenuItem>
                   <MenuItem icon={<FaTrash />} onClick={() => onDeleteTodo(id)}>
                     Delete task
@@ -121,20 +204,6 @@ const Todo = ({ id, complete, text, content }) => {
                 </MenuList>
               </Menu>
             </Flex>
-            <Container
-              display="flex"
-              alignItems="center"
-              maxW={["xs", null, "xl"]}
-              justifyContent="center"
-              cursor="pointer"
-              _hover={{ textStyle: "reg" }}
-              color="gray.400"
-            >
-              <MdAdd />
-              <Text ml={2} fontWeight="500" fontSize={["sm", null, "md"]}>
-                Add task
-              </Text>
-            </Container>
           </VStack>
         </AccordionPanel>
       </AccordionItem>
@@ -146,14 +215,35 @@ const Todo = ({ id, complete, text, content }) => {
           bg={useColorModeValue("gray.50", "gray.800")}
           py={2}
         >
-          <ModalBody fontSize={["sm", null, "md"]}>
-            You can edit the task title and content by clicking the text itself.
-          </ModalBody>
-          <ModalFooter>
-            <Button layerStyle="reg" color="white" _focus="" onClick={onClose}>
-              Got it!
-            </Button>
-          </ModalFooter>
+          <ModalHeader fontSize={["md", null, "lg"]}>Edit title</ModalHeader>
+          <ModalCloseButton _focus="" />
+          <form onSubmit={onUpdateTitle}>
+            <ModalBody>
+              <Input
+                _focus=""
+                variant="Flushed"
+                placeholder={text}
+                value={editedTodo}
+                required
+                fontSize={["sm", null, "md"]}
+                bg={useColorModeValue("gray.50", "gray.800")}
+                onChange={(e) => setEditedTodo(e.target.value)}
+              />
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                size="sm"
+                type="submit"
+                layerStyle="reg"
+                color="white"
+                _focus=""
+                onClick={onClose}
+                fontSize={["sm", null, "md"]}
+              >
+                Save
+              </Button>
+            </ModalFooter>
+          </form>
         </ModalContent>
       </Modal>
     </>

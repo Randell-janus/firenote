@@ -70,7 +70,7 @@ const AddTask = () => {
                 >
                   <MdAdd />
                   <Text ml={2} fontWeight="500" fontSize={["sm", null, "md"]}>
-                    Add section
+                    Add task
                   </Text>
                 </Flex>
               </PopoverTrigger>

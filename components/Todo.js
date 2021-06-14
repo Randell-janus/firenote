@@ -1,8 +1,7 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { auth, firestore } from "../firebase/firebase";
 import {
   Container,
-  Box,
   VStack,
   Text,
   useColorModeValue,
@@ -16,36 +15,29 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalBody,
-  ModalFooter,
-  useDisclosure,
-  ModalHeader,
-  ModalCloseButton,
-  Input,
-  Tooltip,
   Textarea,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverHeader,
-  PopoverBody,
-  PopoverCloseButton,
-  useToast,
+  Input,
+  AlertDialog,
+  AlertDialogOverlay,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogBody,
+  AlertDialogFooter,
 } from "@chakra-ui/react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { BsThreeDots, BsCircle, BsCheckCircle } from "react-icons/bs";
-import { BiHelpCircle } from "react-icons/bi";
+import { CgDetailsMore } from "react-icons/cg";
 
 const Todo = ({ id, complete, text, content }) => {
   const todosRef = firestore.collection(`users/${auth.currentUser.uid}/todos`);
-  const initRef = useRef();
   const [editedTodo, setEditedTodo] = useState("");
   const [editedBody, setEditedBody] = useState("");
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const toast = useToast();
+
+  const [editTitleModalIsOpen, setEditTitleModalIsOpen] = useState(false);
+  const onCloseTitleBodyModal = () => setEditTitleModalIsOpen(false);
+
+  const [editBodyModalIsOpen, setEditBodyModalIsOpen] = useState(false);
+  const onCloseEditBodyModal = () => setEditBodyModalIsOpen(false);
 
   const onCompleteTodo = (id, complete) => {
     todosRef.doc(id).set({ complete: !complete }, { merge: true });
@@ -103,61 +95,10 @@ const Todo = ({ id, complete, text, content }) => {
               >
                 {complete ? <BsCheckCircle /> : <BsCircle />}
               </Text>
-              <Popover initialFocusRef={initRef}>
-                {({ onClose }) => (
-                  <>
-                    <PopoverTrigger>
-                      <Container w={["2xs", null, "xl"]} py={2}>
-                        <Tooltip
-                          hasArrow
-                          arrowSize={6}
-                          label="click to edit"
-                          bg={useColorModeValue("gray.700", "gray.200")}
-                        >
-                          {content}
-                        </Tooltip>
-                      </Container>
-                    </PopoverTrigger>
-                    <PopoverContent
-                      bg={useColorModeValue("gray.50", "gray.800")}
-                      w={["2xs", null, "sm"]}
-                    >
-                      <PopoverCloseButton _focus="" />
-                      <PopoverHeader fontWeight="500">
-                        Edit task details
-                      </PopoverHeader>
-                      <PopoverBody p={3}>
-                        <form onSubmit={onUpdateBody}>
-                          <Textarea
-                            p={1}
-                            ref={initRef}
-                            _focus=""
-                            variant="Unstyled"
-                            placeholder={content}
-                            bg={useColorModeValue("gray.50", "gray.800")}
-                            fontSize={["sm", null, "md"]}
-                            value={editedBody}
-                            onChange={(e) => setEditedBody(e.target.value)}
-                          ></Textarea>
-                          <Button
-                            size="sm"
-                            textStyle="white"
-                            layerStyle="reg"
-                            _hover={{ layerStyle: "hover" }}
-                            fontSize={["sm", null, "md"]}
-                            _focus=""
-                            mr={4}
-                            type="submit"
-                            onClick={onClose}
-                          >
-                            Save
-                          </Button>
-                        </form>
-                      </PopoverBody>
-                    </PopoverContent>
-                  </>
-                )}
-              </Popover>
+
+              <Container w={["2xs", null, "xl"]} py={2}>
+                {content}
+              </Container>
 
               <Menu>
                 <MenuButton aria-label="Options" mr={0.5}>
@@ -173,30 +114,18 @@ const Todo = ({ id, complete, text, content }) => {
                   >
                     Mark status
                   </MenuItem>
-                  <MenuItem icon={<FaEdit />} onClick={onOpen}>
-                    Edit task title
-                  </MenuItem>
                   <MenuItem
-                    icon={<BiHelpCircle />}
-                    onClick={() =>
-                      toast({
-                        duration: 9000,
-                        isClosable: true,
-                        render: () => (
-                          <Box
-                            color="white"
-                            p={4}
-                            bg="blue.300"
-                            rounded="md"
-                            maxW={["2xs", null, "sm"]}
-                          >
-                            Edit the task content by clicking the text itself
-                          </Box>
-                        ),
-                      })
-                    }
+                    icon={<FaEdit />}
+                    onClick={() => setEditTitleModalIsOpen(true)}
                   >
-                    Help
+                    Edit title
+                  </MenuItem>
+
+                  <MenuItem
+                    icon={<CgDetailsMore />}
+                    onClick={() => setEditBodyModalIsOpen(true)}
+                  >
+                    Edit details
                   </MenuItem>
                   <MenuItem icon={<FaTrash />} onClick={() => onDeleteTodo(id)}>
                     Delete task
@@ -208,44 +137,96 @@ const Todo = ({ id, complete, text, content }) => {
         </AccordionPanel>
       </AccordionItem>
 
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent
-          maxW={["xs", "xs", "sm"]}
-          bg={useColorModeValue("gray.50", "gray.800")}
-          py={2}
-        >
-          <ModalHeader fontSize={["md", null, "lg"]}>Edit title</ModalHeader>
-          <ModalCloseButton _focus="" />
-          <form onSubmit={onUpdateTitle}>
-            <ModalBody>
-              <Input
-                _focus=""
-                variant="Flushed"
-                placeholder={text}
-                value={editedTodo}
-                required
-                fontSize={["sm", null, "md"]}
-                bg={useColorModeValue("gray.50", "gray.800")}
-                onChange={(e) => setEditedTodo(e.target.value)}
-              />
-            </ModalBody>
-            <ModalFooter>
-              <Button
-                size="sm"
-                type="submit"
-                layerStyle="reg"
-                color="white"
-                _focus=""
-                onClick={onClose}
-                fontSize={["sm", null, "md"]}
-              >
-                Save
-              </Button>
-            </ModalFooter>
-          </form>
-        </ModalContent>
-      </Modal>
+      {/* EDIT TITLE MODAL */}
+      <AlertDialog
+        isOpen={editTitleModalIsOpen}
+        onClose={onCloseTitleBodyModal}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent maxW={["xs", "xs", "sm"]}>
+            <AlertDialogHeader fontSize={["md", null, "lg"]} fontWeight="bold">
+              Edit title
+            </AlertDialogHeader>
+            <form onSubmit={onUpdateTitle}>
+              <AlertDialogBody>
+                <Input
+                  _focus=""
+                  variant="Unstyled"
+                  placeholder={text}
+                  bg={useColorModeValue("gray.50", "gray.800")}
+                  fontSize={["sm", null, "md"]}
+                  value={editedTodo}
+                  onChange={(e) => setEditedTodo(e.target.value)}
+                ></Input>
+              </AlertDialogBody>
+              <AlertDialogFooter>
+                <Button
+                  variant="ghost"
+                  _focus=""
+                  onClick={onCloseTitleBodyModal}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  layerStyle="reg"
+                  _focus=""
+                  _hover={{ layerStyle: "hover" }}
+                  onClick={onCloseTitleBodyModal}
+                  ml={3}
+                  color="white"
+                >
+                  Save
+                </Button>
+              </AlertDialogFooter>
+            </form>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
+
+      {/* EDIT DETAILS MODAL */}
+      <AlertDialog isOpen={editBodyModalIsOpen} onClose={onCloseEditBodyModal}>
+        <AlertDialogOverlay>
+          <AlertDialogContent maxW={["xs", "xs", "sm"]}>
+            <AlertDialogHeader fontSize={["md", null, "lg"]} fontWeight="bold">
+              Edit details
+            </AlertDialogHeader>
+            <form onSubmit={onUpdateBody}>
+              <AlertDialogBody>
+                <Textarea
+                  _focus=""
+                  variant="Unstyled"
+                  placeholder={content}
+                  bg={useColorModeValue("gray.50", "gray.800")}
+                  fontSize={["sm", null, "md"]}
+                  value={editedBody}
+                  onChange={(e) => setEditedBody(e.target.value)}
+                ></Textarea>
+              </AlertDialogBody>
+              <AlertDialogFooter>
+                <Button
+                  variant="ghost"
+                  _focus=""
+                  onClick={onCloseEditBodyModal}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  layerStyle="reg"
+                  _focus=""
+                  _hover={{ layerStyle: "hover" }}
+                  onClick={onCloseEditBodyModal}
+                  ml={3}
+                  color="white"
+                >
+                  Save
+                </Button>
+              </AlertDialogFooter>
+            </form>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </>
   );
 };

@@ -50,9 +50,9 @@ const AnonModal = () => {
           </ModalHeader>
           <ModalCloseButton _focus="" />
           <ModalBody textAlign="justify" fontSize={["sm", null, "md"]}>
-            Feel free to create some task and test out the Create, Read, Update,
+            Feel free to add some notes and test out the Create, Read, Update,
             and Delete functionality of the app. Note that you will lose access
-            to any created task once you sign out as a guest.
+            to created notes once you sign out as a guest.
           </ModalBody>
           <ModalFooter>
             <Button variant="ghost" mr={3} _focus="" onClick={onClose}>

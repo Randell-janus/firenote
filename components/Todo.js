@@ -128,7 +128,7 @@ const Todo = ({ id, complete, text, content }) => {
                     Edit details
                   </MenuItem>
                   <MenuItem icon={<FaTrash />} onClick={() => onDeleteTodo(id)}>
-                    Delete task
+                    Delete note
                   </MenuItem>
                 </MenuList>
               </Menu>

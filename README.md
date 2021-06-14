@@ -1,5 +1,5 @@
 # firenote
-A To-do List application built with **Next.js** and **Firebase**  
+A Note-taking application built with **Next.js** and **Firebase**  
 - https://firenote.vercel.app/
 - Deployed with [Vercel](https://vercel.com/solutions/nextjs)
 

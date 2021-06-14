@@ -47,7 +47,7 @@ const AddTask = () => {
         py={14}
       >
         <Heading mb={3} fontSize={["lg", null, "xl"]}>
-          My Tasks
+          My Notes
         </Heading>
         <Accordion allowToggle>
           {todos && todos.map((todo) => <Todo key={todo.id} {...todo} />)}
@@ -70,7 +70,7 @@ const AddTask = () => {
                 >
                   <MdAdd />
                   <Text ml={2} fontWeight="500" fontSize={["sm", null, "md"]}>
-                    Add task
+                    Add note
                   </Text>
                 </Flex>
               </PopoverTrigger>
@@ -112,7 +112,7 @@ const AddTask = () => {
                       mr={4}
                       type="submit"
                     >
-                      Add task
+                      Add note
                     </Button>
                     <Button
                       mt={3}

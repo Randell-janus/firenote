@@ -48,7 +48,7 @@ export default function Hero() {
           textAlign="center"
           maxW={{ base: "2xs", md: "2xl" }}
         >
-          A To-do List application built with Next.js and Firebase
+          A Note-taking application built with Next.js and Firebase
         </Text>
       </Flex>
 

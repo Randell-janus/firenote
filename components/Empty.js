@@ -43,7 +43,7 @@ const Empty = () => {
           All clear
         </Text>
         <Text color="gray.400" fontSize={["sm", null, "md"]}>
-          You have an empty task list at the moment.
+          You have an empty notes list at the moment.
         </Text>
 
         <Popover
@@ -61,7 +61,7 @@ const Empty = () => {
                   _hover={{ layerStyle: "hover" }}
                   _focus=""
                 >
-                  Add a task
+                  Add a note
                 </Button>
               </PopoverTrigger>
               <PopoverContent
@@ -102,7 +102,7 @@ const Empty = () => {
                       mr={4}
                       type="submit"
                     >
-                      Add task
+                      Add note
                     </Button>
                     <Button
                       mt={3}

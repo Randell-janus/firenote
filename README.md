@@ -5,16 +5,15 @@ A Note-taking application built with **Next.js** and **Firebase**
 
 ## Features
 - Create, Read, Update, and Delete functionality
-- Google Authentication and Anonymous Login as sign in methods
+- Google Authentication and Anonymous Login methods
 - Dark mode functionality
-- Framer Motion animations
 - Mobile Responsive
 
 ### Technologies/Libraries
-- Next.js web framework
-- Cloud Firestore database
-- react-firebase-hooks library
-- Chakra UI component library for styling
+- Next.js
+- Cloud Firestore
+- react-firebase-hooks
+- Chakra UI
 
 ## Views
 - Landing page![](https://github.com/Randell-janus/firenote/blob/main/public/views/landing.JPG)
@@ -25,4 +24,3 @@ A Note-taking application built with **Next.js** and **Firebase**
 
 ## Disclaimer
 - For iOS users: Google sign in may not persist if the website is not opened from a browser.
-- Use system color mode is set to off.
